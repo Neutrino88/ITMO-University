@@ -1,0 +1,134 @@
+	<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [ 
+	<!--ArborText, Inc., 1988-1999, v.4002--> 
+	<!ENTITY cmd "prex"> 
+	<!ENTITY % commonents SYSTEM "smancommon.ent"> 
+	%commonents; 
+	<!ENTITY % booktitles SYSTEM "booktitles.ent"> 
+	%booktitles; 
+	<!ENTITY suncopy "Copyright (c) 2004, Sun Microsystems, Inc. All Rights Reserved."> 
+	]> 
+
+<refentry id="prex"> 
+	<refmeta>  
+		<refentrytitle>prex</refentrytitle>
+		<manvolnum>1</manvolnum>
+		<refmiscinfo class="date">November 17th, 2016</refmiscinfo>
+	</refmeta>
+
+	<refnamediv id="prex">
+		<refname>prex</refname>
+		<refpurpose>система отслеживания и управления пробными точками в процессе или ядре</refpurpose>
+	</refnamediv> 
+	
+	<refsynopsisdiv>
+		<cmdsynopsis>
+			<command>prex</command>
+			<arg choice="opt">-o файл_трассировки</arg>
+			<arg choice="opt">-l библиотеки</arg>
+			<arg choice="opt">-s размер_в_кб</arg>
+			<mandatory_arg> cmd</mandatory_arg>
+			<arg choice="opt">cmd-аргументы</arg>
+		</cmdsynopsis>
+		<cmdsynopsis>
+			<command>prex</command>
+			<arg choice="opt">-o файл_трассировки</arg>
+			<arg choice="opt">-l библиотеки</arg>
+			<arg choice="opt">-s размер_в_кб</arg>
+			<mandatory_arg> -p pid</mandatory_arg>
+		</cmdsynopsis>
+		<cmdsynopsis>
+			<command>prex</command>
+			<mandatory_arg> -k</mandatory_arg>
+			<arg choice="opt">-s размер_в_кб</arg>
+		</cmdsynopsis>
+	</refsynopsisdiv>
+	
+	<refsect1>
+		<title>DESCRIPTION</title>
+		<para><command>prex</command> загружает библиотеку libtnfprobe, а затем находит все пробы в целевом исполняемом файле или ядре и предоставляет интерфейс пользователю для манипуляции ими. Это позволяет probe измениться для трассировки, отладки или того и друго вместе. Трассировка создает трассировочный файл TNF (Trace Normal Form), который может быть конвертирован в ASCII с помощью tnfdump(1) и использован для анализа производительности. Отладка генерирует строку стандартной ошибки при падении во время выполнения.</para>
+		
+		<para><command>prex</command> работает только на динамических исполняемых файлах. </para>
+
+		<subtitle>   Вызов PREX</subtitle>
+		<para>Существует три способа запуска prex: </para>
+		<variablelist>
+			<varlistentry>
+				<term>1.</term>
+				<listitem>
+					<para>Использование prex для старта целевых приложений cmd, которые построенны  без зависимости от libtnfprobe. prex устанавливает переменную окружения LD_PRELOAD для загрузки libtnfprobe в целевом процессе. Затем prex использует переменную окружения PATH для поиска целевого приложения.</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>2.</term>
+				<listitem>
+					<para>Прикрепление prex к запущенному приложению. Запущенное приложение должно уже иметь связь с libtnfprobe. В качестве альтернативы, пользователь может вручную установить LD_PRELOAD для включения libtnfprobe.so.1 до вызова цели.</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>3.</term>
+				<listitem>
+					<para>Использование prex в режиме ядра с ключом -k. В режиме ядра будут доступны дополнительные команды, но некоторые команды из других режимов станут недоступны.</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+		
+		<subtitle>   Управление файлом поиска пути</subtitle>
+		<para>Есть два различных способа общения с prex:</para>
+		<variablelist>
+			<varlistentry>
+				<term>o</term>
+				<listitem>
+					<para>Характеристика управляющего файла. Во время запуска prex ищет файлы с именем .prexrc в каталогах указаных ниже. prex не останавливается на первом найденом. Порядок поиска:</para>
+					<para>		$HOME/</para>
+					<para>		./</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>o</term>
+				<listitem>
+					<para>Ввод команд в строке prex.</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+		
+		<para>Язык команд одинаков для обоих методов и задается в USAGE. Команды, которые что-то возвращают, не будут иметь смысла в управляющем файле. Вывод будет идти на стандартный поток вывода.</para>
+	
+		<para>При использовании prex в целевом процессе, цель будет в запущенном или приостановленом состоянии. Это выясняется наличием или отсутствием подсказки prex>. Если подсказки нет, то целевой процесс запущен. Нажатие Control-C остановит целевой процесс и вернет пользователю подсказку. Однако, нет гарантии, что возврат подсказки произойдет сразу.</para>
+	</refsect1>
+	
+	<refsect1>
+		<title>OPTIONS</title>
+		<variablelist>
+			<varlistentry>
+				<term>-k</term>
+				<listitem>
+					<para>Режим ядра: В режиме ядра будут доступны дополнительные команды, но некоторые команды из других режимов станут недоступны.</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>-l libraries</term>
+				<listitem>
+					<para>Упомянутые библиотеки связаны в целевом процессе, использующим LD_PRELOAD. Этот ключ не может быть использован для присоединения к запущенному процессу. Аргумент ключа -l должен быть строкой, разделенной пробелами и заключенной в двойные ковычки. </para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>-o файл_трассир</term>
+				<listitem>
+					<para>В файл будет записан вывод трассировки. Файл_трассировки считается относительно текущей рабочей директории.</para>
+					<para>Если prex присоединяется к уже запущенноу процессу, то новый файл_трассировки не будет использоваться. Если имя файла не указано, то по уолчанию используется /$TMPDIR/trace-pid, где pid - ИД целевой программы. Если TMPDIR не задан, то используется /tmp.</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>-s размер_в_кб</term>
+				<listitem>
+					<para>Максимальный размер выходного файла трассировки в кбайтах. По умолчанию, размер 4096 кбайт для нормального использования и 384 кбайт в режиме ядра. Минимальный размер составляет 128 кбайт.</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+	</refsect1>
+	
+	<refsect1>
+		<title>SEE ALSO</title>
+		<para>ed(1), kill(1),  ksh(1),  ld(1)</para>
+	</refsect1>
+</refentry>
