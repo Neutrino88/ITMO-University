@@ -1,3 +1,2 @@
-# System-level software
-
-### 3, 4 semesters
+# ITMO University
+Repository stores my solutions of tasks from Software Engineering program at ITMO University
