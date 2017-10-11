@@ -28,7 +28,7 @@ int MyWindow::create(LRESULT(*WndProc)(HWND, UINT, UINT, LONG)) {
 	/* Create WINDOW */
 	hWnd = CreateWindow(wndClass.lpszClassName,
 		L"Lab 3", WS_POPUPWINDOW,
-		600, 200, 180, 290, NULL, NULL, hInstance, NULL);
+		400, 600, 180, 290, NULL, NULL, hInstance, NULL);
 
 	if (!hWnd) {
 		return 2;

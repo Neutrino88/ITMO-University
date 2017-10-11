@@ -1,12 +1,17 @@
 #include <windows.h>
 #include "MyWindow.h"
 
+#define TIMER_ID 1
+
+int dy = 5, y = 600;
+
 LRESULT WndProc(HWND, UINT, WPARAM, LPARAM);
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, LPWSTR lpCmdLine, int nCmdShow){
 	// Create window
 	MyWindow window(hInstance, nCmdShow);
 	window.create(WndProc);
+	window.show();
 
 	// Set window form
 	POINT p[8];
@@ -21,25 +26,39 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, LPWSTR lpCmdLine, int nCmdSh
 
 	HRGN hRgn = CreatePolygonRgn(p, 8, WINDING);
 	SetWindowRgn(window.getHWnd(), hRgn, TRUE);
-	
-	// moving window
-	int y = 600;
-	int dy = 10;
 
-	while (true) {
-		MoveWindow(window.getHWnd(), 400, y, 800, 600, true);
-		window.show();
+	int nTimerID = SetTimer(window.getHWnd(), TIMER_ID, 50, NULL);
 
-		if (y > -170) y -= dy;
-		else y = 600;
-		Sleep(100);
+	MSG Msg;
+	while (GetMessage(&Msg, NULL, 0, 0)) {
+		TranslateMessage(&Msg);
+		DispatchMessage(&Msg);
 	}
 
-	return 0;
+	return Msg.wParam;
 }
 
 static LRESULT WndProc(HWND hWnd, UINT Message, UINT wParam, LONG lParam) {
 	switch (Message) {
+		case WM_KEYDOWN: {
+			if (wParam == VK_UP) {
+				dy+= 5;
+			}
+			if (wParam == VK_DOWN && dy > 5) {
+				dy -= 5;
+			}
+			break;
+		}
+		case WM_TIMER: {
+			if (wParam == TIMER_ID) {
+				MoveWindow(hWnd, 400, y, 800, 600, true);
+
+				if (y > -170) y -= dy;
+				else y = 600;
+			}
+			break;
+		}
+
 		case WM_DESTROY: {
 			PostQuitMessage(0);
 		}
