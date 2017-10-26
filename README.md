@@ -1,2 +1,3 @@
-# ITMO University
-Repository stores my solutions of tasks from Software Engineering program at ITMO University
+# Scientific modelling and Queueing theory
+
+### 5 semestr
