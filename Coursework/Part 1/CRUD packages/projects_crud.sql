@@ -1,0 +1,57 @@
+CREATE OR REPLACE PACKAGE PROJECTS_CRUD AS
+    
+    FUNCTION CREATE_PROJECT(name_v IN PROJECTS.NAME%TYPE, 
+                        desc_v IN PROJECTS.DESCRIPTION%TYPE, 
+                        date_v IN PROJECTS.CREATING_DATE%TYPE,
+                        user_id_v IN USERS.ID%TYPE) RETURN NUMBER; 
+                        
+    FUNCTION READ_PROJECT(id_v IN PROJECTS.ID%TYPE) RETURN PROJECTS%ROWTYPE;
+     
+    PROCEDURE UPDATE_PROJECT(id_v IN PROJECTS.ID%TYPE,
+                        name_v IN PROJECTS.NAME%TYPE, 
+                        desc_v IN PROJECTS.DESCRIPTION%TYPE, 
+                        date_v IN PROJECTS.CREATING_DATE%TYPE);
+                       
+    PROCEDURE DELETE_PROJECT(id_v IN PROJECTS.ID%TYPE);
+END PROJECTS_CRUD;
+/
+
+CREATE OR REPLACE PACKAGE BODY PROJECTS_CRUD AS
+    FUNCTION CREATE_PROJECT(name_v IN PROJECTS.NAME%TYPE, desc_v IN PROJECTS.DESCRIPTION%TYPE, date_v IN PROJECTS.CREATING_DATE%TYPE, user_id_v IN USERS.ID%TYPE) RETURN NUMBER
+    AS
+        project_id NUMBER := 0;
+    BEGIN
+        INSERT INTO PROJECTS (NAME, DESCRIPTION, CREATING_DATE) values (name_v, desc_v, date_v);
+        SELECT PROJECTS_ID_SEQ.CURRVAL INTO project_id FROM DUAL;
+    
+        INSERT INTO PROJECT_USER (PROJECT_ID, USER_ID) values (project_id, user_id_v);
+
+        RETURN project_id;
+    END CREATE_PROJECT;
+
+    FUNCTION READ_PROJECT(id_v IN PROJECTS.ID%TYPE) RETURN PROJECTS%ROWTYPE
+    AS
+        project PROJECTS%ROWTYPE;
+    BEGIN   
+        SELECT * into project FROM PROJECTS WHERE ID = id_v;
+        return project;
+    END READ_PROJECT;
+     
+    PROCEDURE UPDATE_PROJECT(id_v IN PROJECTS.ID%TYPE, name_v IN PROJECTS.NAME%TYPE, desc_v IN PROJECTS.DESCRIPTION%TYPE, date_v IN PROJECTS.CREATING_DATE%TYPE) AS
+    BEGIN
+        UPDATE PROJECTS
+            SET NAME = name_v,
+                DESCRIPTION = desc_v,
+                CREATING_DATE = date_v
+            WHERE ID = id_v;
+    END UPDATE_PROJECT;
+      
+    PROCEDURE DELETE_PROJECT(id_v IN PROJECTS.ID%TYPE)
+    AS
+    BEGIN
+        DELETE FROM PROJECT_USER WHERE PROJECT_ID = id_v;
+        DELETE FROM PROJECTS WHERE ID = id_v;
+    END DELETE_PROJECT;
+ 
+END PROJECTS_CRUD;
+/

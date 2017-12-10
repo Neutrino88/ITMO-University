@@ -36,12 +36,12 @@ CREATE OR REPLACE PACKAGE BODY STRENGTH AS
 END STRENGTH;
 /
 
-SELECT (SELECT COUNT(*) FROM EMPLOYEES) AS ВСЕГО,
-           STRENGTH.BY_POSITIONS(2)+STRENGTH.BY_POSITIONS(3)+STRENGTH.BY_POSITIONS(4) AS Программистов,
-           STRENGTH.BY_WORK_MODE(2) AS На_пол_ставки,
-           STRENGTH.BY_WORK_MODE(3) AS На_полн_ставку,
-           STRENGTH.BY_POSITIONS(12) AS Обслуж_персон,
-           STRENGTH.BY_POSITIONS(7)+STRENGTH.BY_POSITIONS(8) AS Дизайнеров,
-           STRENGTH.BY_POSITIONS(1) AS Нач_отделов,
-           STRENGTH.BY_POSITIONS(6) AS Спец_по_кадрам
+SELECT (SELECT COUNT(*) FROM EMPLOYEES) AS Р’РЎР•Р“Рћ,
+           STRENGTH.BY_POSITIONS(2)+STRENGTH.BY_POSITIONS(3)+STRENGTH.BY_POSITIONS(4) AS РџСЂРѕРіСЂР°РјРјРёСЃС‚РѕРІ,
+           STRENGTH.BY_WORK_MODE(2) AS РќР°_РїРѕР»_СЃС‚Р°РІРєРё,
+           STRENGTH.BY_WORK_MODE(3) AS РќР°_РїРѕР»РЅ_СЃС‚Р°РІРєСѓ,
+           STRENGTH.BY_POSITIONS(12) AS РћР±СЃР»СѓР¶_РїРµСЂСЃРѕРЅ,
+           STRENGTH.BY_POSITIONS(7)+STRENGTH.BY_POSITIONS(8) AS Р”РёР·Р°Р№РЅРµСЂРѕРІ,
+           STRENGTH.BY_POSITIONS(1) AS РќР°С‡_РѕС‚РґРµР»РѕРІ,
+           STRENGTH.BY_POSITIONS(6) AS РЎРїРµС†_РїРѕ_РєР°РґСЂР°Рј
 from dual;
