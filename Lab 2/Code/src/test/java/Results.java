@@ -1,0 +1,37 @@
+public class Results {
+  private static final double delta = 0.0001;
+  static double[][] results = {
+          {0, Double.NEGATIVE_INFINITY},
+          //{0 - delta, Double.NaN},
+          {-Math.PI/8, -16 * Math.sqrt(2)},
+          //{-Math.PI/4 + delta, -8},
+          {-Math.PI/4, -8},
+          //{-Math.PI/4 - delta, -8},
+          {-Math.PI*3/8, -16 * Math.sqrt(2)},
+          //{-Math.PI/2 + delta, Double.NEGATIVE_INFINITY},
+          {-Math.PI/2, Double.NaN},
+          //{-Math.PI/2 - delta, Double.POSITIVE_INFINITY},
+          {-Math.PI*5/8, 16 * Math.sqrt(2)},
+          //{-Math.PI*3/4 + delta, 8},
+          {-Math.PI*3/4, 8},
+          //{-Math.PI*3/4 - delta, 8},
+          {-Math.PI*7/8, 16 * Math.sqrt(2)},
+          // {-Math.PI + delta, Double.POSITIVE_INFINITY},
+          {-Math.PI, Double.NaN},
+          // {-Math.PI - delta, Double.NEGATIVE_INFINITY},
+          //{0 + delta, Double.NaN},
+          //{0.2, 4.97926},
+          {0.4, 0.120575},
+          // {0.5668 - delta, 1.87960 / 1000000000},
+          {0.5668, 1.796745 / 1000000000},
+          // {0.5668 + delta, 1.71567 / 1000000000},
+          //{0.7408 - delta, 0.00488597},
+          {0.7408, 0.00488597},
+          // {0.7408 + delta, 0.00488597},
+          // {1 - delta, 0},
+          {1, 0},
+          // {1 + delta, 0},
+          {1.4, 0.0387190},
+          {2, 0.207690151}
+  };
+}
