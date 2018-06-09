@@ -1,2 +1,3 @@
-# ITMO University
-Repository stores my solutions of tasks from Software Engineering program at ITMO University
+# Distributed Computing
+
+### 6 semester
